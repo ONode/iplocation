@@ -1,8 +1,9 @@
 'use strict'
 
-var debug = require('debug')('iplocation')
 var ipRegex = require('ip-regex')
-var request = require('request')
+var request = require(
+  typeof window === 'undefined' ? 'request' : 'browser-request'
+)
 
 var defaultProviders = [
   'https://freegeoip.net/json/*',
@@ -37,13 +38,10 @@ module.exports = function () {
 
     var url = providers[i].replace('*', ip || '')
 
-    debug('trying: ' + url)
-
-    request.get(url, { withCredentials: false }, function (err, response, body) {
+    request.get({ url, withCredentials: false }, function (err, response, body) {
       var json
 
       try {
-        debug('got: ' + body)
         json = JSON.parse(body)
       } catch (ex) {
         return retry(++i, callback)
