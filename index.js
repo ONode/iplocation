@@ -1,9 +1,7 @@
 'use strict'
 
 var ipRegex = require('ip-regex')
-var request = require(
-  typeof window === 'undefined' ? 'request' : 'browser-request'
-)
+var request = require('browser-request')
 
 var defaultProviders = [
   'https://freegeoip.net/json/*',
